@@ -1,0 +1,52 @@
+{
+	"id": "120917345386",
+	"id_v2": "120917345386",
+	"app_type": 0,
+	"display_name": "Nerd wars",
+	"class_name": null,
+	"icon": "market-preview_99447625220181.png",
+	"aod_icon": "海外默认息屏_96905245753354_99084437291013.png",
+	"version_name": "",
+	"version_code": 0,
+	"package_name": "",
+	"package_name_hash": "",
+	"introduction": "",
+	"publish_name": "",
+	"file_hash": "77ab21a4015590a482defd285b5a0582",
+	"file_size": 315156,
+	"ble_ext": {
+		"type": 0,
+		"bg_colors": [],
+		"bottom_background": "",
+		"upper_background": "",
+		"icon_style": [],
+		"icon_color": [],
+		"bg_img": 0,
+		"bg_styles": [],
+		"functions": [],
+		"firmware_version": "1.0.0",
+		"support_element_colour": 0,
+		"element_colours": []
+	},
+	"price": 0,
+	"power_level": 0,
+	"purchase_status": 0,
+	"purchase_type": 0,
+	"sku_id": "120917345386",
+	"spu_id": "0",
+	"spu_version": 1,
+	"attribute_list": [
+		{
+			"attribute_name": "price",
+			"attribute_value_name": "Free"
+		}
+	],
+	"file_hash_v2": "22852a8489c4d17412fbb596f5db0035",
+	"file_size_v2": 495637,
+	"label_list": [
+		{
+			"label_id": "252",
+			"label_name": "Custom"
+		}
+	]
+}

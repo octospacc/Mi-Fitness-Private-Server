@@ -1,0 +1,17 @@
+{
+	"app_id": 7000003761520038000,
+	"app_name": "Calculator",
+	"app_version_code": 10,
+	"package_name": "com.givemefive.calc",
+	"size": 54,
+	"type_name": "CustomApp",
+	"description": "Tool",
+	"introduction": "小米手环 9 快应用 计算器 (Xiaomi Mi Band 9 Quick Application Calculator): <https://www.bandbbs.cn/threads/11975/>",
+	"change_log": "",
+	"support_client_v": "",
+	"support_firmware_v": "",
+	"status": 4,
+	"u_time": 0,
+	"create_time": 1723589467,
+	"update_time": 1723589512
+}

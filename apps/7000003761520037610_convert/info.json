@@ -1,0 +1,17 @@
+{
+	"app_id": 7000003761520038000,
+	"app_name": "Converter",
+	"app_version_code": 10,
+	"package_name": "com.lst.converter",
+	"size": 47,
+	"type_name": "CustomApp",
+	"description": "Tool",
+	"introduction": "",
+	"change_log": "",
+	"support_client_v": "",
+	"support_firmware_v": "",
+	"status": 4,
+	"u_time": 0,
+	"create_time": 1724164318,
+	"update_time": 1724164341
+}

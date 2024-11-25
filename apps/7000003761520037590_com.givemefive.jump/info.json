@@ -1,0 +1,17 @@
+{
+	"app_id": 7000003761520038000,
+	"app_name": "Jump",
+	"app_version_code": 10,
+	"package_name": "com.givemefive.jump",
+	"size": 137,
+	"type_name": "CustomApp",
+	"description": "Game",
+	"introduction": "",
+	"change_log": "",
+	"support_client_v": "",
+	"support_firmware_v": "",
+	"status": 4,
+	"u_time": 0,
+	"create_time": 1723589787,
+	"update_time": 1723589800
+}
