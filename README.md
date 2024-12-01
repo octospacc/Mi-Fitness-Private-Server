@@ -31,13 +31,13 @@ We need help! Feel free to contribute with either documentation, code, or testin
 
 ## Usage
 
-### Server setup (optional)
+### Server Setup (optional)
 
 Get `index.php` and set it up on a web server (even just localhost on your phone) with a dedicated domain and HTTPS encryption with a trusted certificate. (Please search on the web for how to setup a PHP server application and how to work with HTTPS.) Optionally download all the other files in this repo, like watchfaces and apps, from both the `main` and the `bin` git branch, in order to have a pre-filled server from the start.
 
 This step is optional, as you can just use our main online instance of the server, without hosting anything yourself, if you are ok with the limitations (eg. you can't add custom files for download, since you're not the admin).
 
-### Client app setup (mandatory)
+### Client App Setup (mandatory)
 
 To use the private server, you need to either intercept and redirect traffic on your mobile device from the official server to the private one, or you can use a modified version of the mobile app.
 
@@ -45,7 +45,7 @@ On Android, the latter is the easiest option. Multiple flavours of pre-patched A
 
 Pre-patched APKs are available in GitHub releases; latest at <https://github.com/octospacc/Mi-Fitness-Private-Server/releases/latest>. You must first uninstall your current Mi Fitness app to install the modified version!
 
-#### Personally patching Mi Fitness
+#### Personally Patching Mi Fitness
 
 In case you want to reproduce a patched APK yourself, which is also needed if you want to make the app connect to your own server on an address other than localhost, these are the instructions. Required tools are a UNIX shell and [Apktool](https://apktool.org).
 
@@ -66,11 +66,11 @@ Note: for now only m0tral's APK has been used as a base to make our patched APKs
 4. Recompile the app into an APK with `apktool b .`
 5. Sign the APK for installation; you can use [Uber Apk Signer](https://favr.dev/opensource/uber-apk-signer/): `java -jar uber-apk-signer.jar -a dist/THE_ORIGINAL_FILE.apk`
 
-## Credits and copyright
+## Credits and Copyright
 
 Mi Fitness is the proprietary application of Xiaomi and fully their copyright, as is m0tral's APK with his modifications his copyright. We are not affiliated with either, and these parts are not redistributed in any branch of the repository. Our own modifications are fully documented and can be recreated independently.
 
-The `bin` branch of the repo hosts some extra precompiled assets, not needed for the base functionality of the server, but solely provided for convenience and preservation of specific extra features (eg. apps and watchface galleries). Following a fair-use ideal, only public files available for free are uploaded, and credits are provided in some way or another. Please open an issue if you feel like this infringes on your copyright and we will take down the illicit content.
+The `bin` branch of the repo hosts some extra precompiled assets, not needed for the base functionality of the server, but solely provided for convenience and preservation of specific extra features (eg. apps and watchface galleries). Following a fair-use ideal, only public files available for free are uploaded, and credits are provided inside the files and/or in [ThirdPartyContent.md](./ThirdPartyContent.md). Please open an issue if you feel like this infringes on your copyright and we will take down the illicit content.
 
 The private server code is fully original and my own copyright. It will be later released under a free software license to be determined.
 

@@ -4,8 +4,13 @@ function getServerUrl() {
 	return $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'];
 }
 
+function setServerUrl($name) {
+	$_SERVER['REQUEST_SCHEME'] = 'https';
+	$_SERVER['SERVER_NAME'] = $name;
+}
+
 function scandir2($path) {
-	return array_diff(scandir($path), ['.', '..']);
+	return array_diff((scandir($path) ?: []), ['.', '..']);
 }
 
 function getFileNameOfType($folder, $type) {
@@ -80,6 +85,10 @@ function getItemData($itemPath) {
 	return $data;
 }
 
+function checkFakeIdList($idList) {
+	return ($idList && $idList[0] === '');
+}
+
 function getWatchFaceInfo($id, $model) {
 	return getWatchFaceList($model, [$id])[0] ?: [];
 }
@@ -92,7 +101,8 @@ function getWatchFaceList($model, $idList=null) {
 		$data = getItemData($dir);
 		$data['id'] ??= hash('sha256', $data['display_name']);
 		$data['id_v2'] ??= $data['id'];
-		if (!$idList || (in_array($data['id'], $idList) || in_array($data['id_v2'], $idList))) {
+		$isFakeIdList = checkFakeIdList($idList);
+		if (!$idList || $isFakeIdList || (in_array($data['id'], $idList) || in_array($data['id_v2'], $idList))) {
 			$icon = $data['icon'] ?: getFileNameOfType($dir, 'png') ?: getFileNameOfType($dir, 'jpg');
 			$data['aod_icon'] = $url . '/' . (getFileNameWithPrefix($dir, 'aod-preview_') ?: $data['aod_icon'] ?: $icon);
 			$data['icon'] = $url . '/' . (getFileNameWithPrefix($dir, 'market-preview_') ?: $icon);
@@ -117,6 +127,9 @@ function getWatchFaceList($model, $idList=null) {
 				$data['file_size_v2'] ??= filesize($file_v2);
 			}
 			array_push($list, $data);
+			if ($isFakeIdList) {
+				break;
+			}
 		}
 	}
 	return $list;
@@ -154,57 +167,75 @@ function getDeviceConfig($model) {
 	}
 }
 
-function apiResponse($result) {
-	return json_encode([
-		'code'   => 200,
-		'result' => $result,
-	]);
+function makeResponse($path, $data=[]) {
+	switch ($path) {
+		case '/api/v2/paidwatchface/list':
+			// Device > Manage band displays > Local
+			return [
+				'watchface_list' => getWatchFaceList($data['model'], $data['id_list']),
+			];
+		case '/api/v2/paidwatchface/index':
+			// Device > Manage band displays > Online
+			return [
+				'device_config'       => getDeviceConfig($data['model']),
+				'feed_watchface_list' => getFeedWatchFaceList($data['model'], 1),
+				'has_more'            => false,
+			];
+		case '/api/v2/paidwatchface/detail':
+			// Device > Manage band displays > [Watchface]
+			return [
+				'watch_face' => getWatchFaceInfo($data['id'], $data['model']),
+			];
+		case '/api/v2/paidwatchface/download':
+			// Device > Manage band displays > [Watchface] > Apply
+			return [
+				'download_info' => getWatchFaceInfo($data['id'], $data['model']),
+				'license'       => '{}',
+				'sign'          => '',
+			];
+		case '/micolor/api/get_watch_app_info':
+		case '/micolor/api/get_watch_app_list':
+			// Device > Apps > Apps
+			return [
+				'watch_app_list' => getWatchAppList(),
+			];
+	}
 }
 
-$path = parse_url($_SERVER['REQUEST_URI'])['path'];
-$data = json_decode($_GET['data'], true);
-
-if (preg_match('@/api/v2/paidwatchface/|/micolor/api/@', $path)) {
-	header('Content-Type: application/json; charset=utf-8');
-}
-
-switch ($path) {
-	case '/api/v2/paidwatchface/list':
-		// Device > Manage band displays > Local
-		echo apiResponse([
-			'watchface_list' => getWatchFaceList($data['model'], $data['id_list']),
+function handleRequest() {
+	$path = parse_url($_SERVER['REQUEST_URI'])['path'];
+	$data = json_decode($_GET['data'], true);
+	$result = makeResponse($path, $data);
+	if ($result !== null) {
+		header('Content-Type: application/json; charset=utf-8');
+		echo json_encode([
+			'code'   => 200,
+			'result' => $result,
 		]);
-		exit;
-	case '/api/v2/paidwatchface/index':
-		// Device > Manage band displays > Online
-		echo apiResponse([
-			'device_config'       => getDeviceConfig($data['model']),
-			'feed_watchface_list' => getFeedWatchFaceList($data['model'], 1),
-			'has_more'            => false,
-		]);
-		exit;
-	case '/api/v2/paidwatchface/detail':
-		// Device > Manage band displays > [Watchface]
-		echo apiResponse([
-			'watch_face' => getWatchFaceInfo($data['id'], $data['model']),
-		]);
-		exit;
-	case '/api/v2/paidwatchface/download':
-		// Device > Manage band displays > [Watchface] > Apply
-		echo apiResponse([
-			'download_info' => getWatchFaceInfo($data['id'], $data['model']),
-			'license'       => '{}',
-			'sign'          => '',
-		]);
-		exit;
-	case '/micolor/api/get_watch_app_info':
-	case '/micolor/api/get_watch_app_list':
-		// Device > Apps > Apps
-		echo apiResponse([
-			'watch_app_list' => getWatchAppList(),
-		]);
-		exit;
-	default:
+	} else {
 		http_response_code(404);
+	}
 }
 
+function localDump($namespace, $endpoints, $data=[]) {
+	mkdir(__DIR__ . $namespace, 0777, true);
+	foreach ($endpoints as $endpoint) {
+		file_put_contents(".{$namespace}/${endpoint}", json_encode(makeResponse("{$namespace}/${endpoint}", $data)));
+	}
+}
+
+function main() {
+	if (array_key_exists('REQUEST_URI', $_SERVER)) {
+		handleRequest();
+	} else {
+		$staticConf = parse_ini_file('static.ini');
+		setServerUrl($staticConf['server_domain']);
+		localDump('/api/v2/paidwatchface', ['list', 'index', 'detail', 'download'], [
+			'model' => $staticConf['watch_model'],
+			'id' => $staticConf['installable_watchface'],
+		]);
+		localDump('/micolor/api', ['get_watch_app_info', 'get_watch_app_list']);
+	}
+}
+
+main();
