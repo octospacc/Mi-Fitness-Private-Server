@@ -1,0 +1,52 @@
+{
+	"id": "120917345187",
+	"id_v2": "120917345187",
+	"app_type": 0,
+	"display_name": "Fighter",
+	"class_name": null,
+	"icon": "market-preview_98348503662595.png",
+	"aod_icon": "海外默认息屏_98339431383057.png",
+	"version_name": "",
+	"version_code": 0,
+	"package_name": "",
+	"package_name_hash": "",
+	"introduction": "",
+	"publish_name": "",
+	"file_hash": "344cbc444bf867da08adb9eb95347503",
+	"file_size": 894031,
+	"ble_ext": {
+		"type": 0,
+		"bg_colors": [],
+		"bottom_background": "",
+		"upper_background": "",
+		"icon_style": [],
+		"icon_color": [],
+		"bg_img": 0,
+		"bg_styles": [],
+		"functions": [],
+		"firmware_version": "1.0.0",
+		"support_element_colour": 0,
+		"element_colours": []
+	},
+	"price": 0,
+	"power_level": 0,
+	"purchase_status": 0,
+	"purchase_type": 0,
+	"sku_id": "120917345187",
+	"spu_id": "0",
+	"spu_version": 1,
+	"attribute_list": [
+		{
+			"attribute_name": "price",
+			"attribute_value_name": "Free"
+		}
+	],
+	"file_hash_v2": "aee40b45d9b1d1859d2c8a4f0b32b270",
+	"file_size_v2": 1319832,
+	"label_list": [
+		{
+			"label_id": "252",
+			"label_name": "Custom"
+		}
+	]
+}
