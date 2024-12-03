@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Download APK</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+</head>
+<body>
+<center>
+<p>Download the Mi Fitness patched APK for private server "<code>{SERVER_DOMAIN}</code>" ({APK_SIZE} MB):</p>
+<p><button disabled="disabled">Please enable JavaScript to download.</button></p>
+<p>Built on {BUILD_DATE}.</p>
+</center>
+<script>
+Object.assign(document.querySelector('center p button'), {
+  disabled: false,
+  innerHTML: "Download APK",
+  onclick: function(){
+    var button = this;
+    button.disabled = true;
+    var reqs = '{APK_PARTS}'.split(' ').map(function(part){
+      try {
+        return fetch(part).then(function(res){
+          return res.blob();
+        });
+      } catch(e) {
+        console.error(e);
+        alert(e);
+      }
+    });
+    Promise.all(reqs).then(function(blobs){
+      Object.assign(document.createElement('a'), {
+        download: "Mi-Fitness-Private-Server-Personal.apk",
+        href: URL.createObjectURL(new Blob(blobs)),
+      }).click();
+      button.disabled = false;
+    });
+  },
+});
+</script>
+</body>
+</html>

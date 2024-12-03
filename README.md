@@ -33,15 +33,27 @@ We need help! Feel free to contribute with either documentation, code, or testin
 
 ### Server Setup (optional)
 
-Get `index.php` and set it up on a web server (even just localhost on your phone) with a dedicated domain and HTTPS encryption with a trusted certificate. (Please search on the web for how to setup a PHP server application and how to work with HTTPS.) Optionally download all the other files in this repo, like watchfaces and apps, from both the `main` and the `bin` git branch, in order to have a pre-filled server from the start.
+The server code has been (within limits) designed to work in two modes: as a standard REST dynamic server application with a proper backend, and as a static generator producing files which can be hosted by any dumb HTTPS server.
 
-This step is optional, as you can just use our main online instance of the server, without hosting anything yourself, if you are ok with the limitations (eg. you can't add custom files for download, since you're not the admin).
+This step is in any case optional, as you can just use our main online instance of the server, without hosting anything yourself, if you are ok with the limitations (eg. you can't add custom files for download, since you're not the admin). Otherwise, keep on reading.
+
+#### Dynamic Server (ideal, but hard)
+
+Get `index.php` and set it up on a web server (even just localhost on your phone) with a dedicated domain and HTTPS encryption with a trusted certificate. (Please search on the web for how to setup a PHP server application and how to work with HTTPS.) Optionally download all the other files in this repo, like watchfaces and apps, from both the `main` and the `bin` git branch, in order to have a pre-filled server from the start. (Alternatively, run `scripts/get-default-resources.sh`.)
+
+#### Static API (limited, but easy)
+
+Depending on where you want to host the static API, you will have to clone this repository in full and manually run the appropriate shell scripts, or you can just create a fork of the repo on GitHub. In any case, keep in mind that there are substantial limitations; for example, only one (1) downloadable watchface can be made available at any moment, and you will have to edit the ID in the INI file to change which one gets served.
+
+0. If self-hosting, you can read the required commands inside the included `*.example.yml` files; If using GitHub, after forking, enable Actions for your copy of the repository, and copy the contents of `github.example.yml` to a new file with path `.github/workflows/main.yml`
+1. Edit `static.ini` to set at least `server_domain` to your server's address (without leading `https://`, eg. `example.com` or `youruser.github.io/Mi-Fitness-Private-Server` in case of forking the repo and using the default name), and `watch_model` to your wearable's codename
+2. Run the scripts if self-hosting, or just push to your forked repository if using GitHub, and the API will be live at the address you specified; open it in a web browser at the `download.html` page (eg. `example.com/download.html`) to download the patched client if needed
 
 ### Client App Setup (mandatory)
 
 To use the private server, you need to either intercept and redirect traffic on your mobile device from the official server to the private one, or you can use a modified version of the mobile app.
 
-On Android, the latter is the easiest option. Multiple flavours of pre-patched APKs are available for you to just download and install: a version that connects to our main developer instance (`...Developer-Instance.apk`), and one that connects to `https://127.0.0.1:8443` (`...localhost.apk`).
+On Android, the latter is the easiest option. Multiple flavours of pre-patched APKs are available for you to just download and install: a version that connects to our main developer instance (`...Developer-Instance.apk`), and one that connects to `https://127.0.0.1:8443` (`...localhost.apk`). If you deployed your own static API server, the APK for connecting to it should have been built by the scripts, and can be downloaded as specified in the dedicated section.
 
 Pre-patched APKs are available in GitHub releases; latest at <https://github.com/octospacc/Mi-Fitness-Private-Server/releases/latest>. You must first uninstall your current Mi Fitness app to install the modified version!
 

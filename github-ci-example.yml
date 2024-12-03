@@ -1,0 +1,25 @@
+name: Static Server & Patched APK
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  page_build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Build
+      run: |
+        sudo apt update
+        sudo apt install -y php git wget apktool default-jre
+        wget -O ./uber-apk-signer.jar https://github.com/patrickfav/uber-apk-signer/releases/download/v1.3.0/uber-apk-signer-1.3.0.jar
+        sh ./scripts/get-default-resources.sh
+        php ./index.php
+        sh ./scripts/make-apk.sh
+        sh ./scripts/make-web-dist.sh
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: dist

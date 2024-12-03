@@ -202,16 +202,20 @@ function makeResponse($path, $data=[]) {
 	}
 }
 
+function makeJsonEnvelope($data) {
+	return json_encode([
+		'code'   => 200,
+		'result' => $data,
+	]);
+}
+
 function handleRequest() {
 	$path = parse_url($_SERVER['REQUEST_URI'])['path'];
 	$data = json_decode($_GET['data'], true);
 	$result = makeResponse($path, $data);
 	if ($result !== null) {
 		header('Content-Type: application/json; charset=utf-8');
-		echo json_encode([
-			'code'   => 200,
-			'result' => $result,
-		]);
+		echo makeJsonEnvelope($result);
 	} else {
 		http_response_code(404);
 	}
@@ -220,7 +224,7 @@ function handleRequest() {
 function localDump($namespace, $endpoints, $data=[]) {
 	mkdir(__DIR__ . $namespace, 0777, true);
 	foreach ($endpoints as $endpoint) {
-		file_put_contents(".{$namespace}/${endpoint}", json_encode(makeResponse("{$namespace}/${endpoint}", $data)));
+		file_put_contents(".{$namespace}/${endpoint}", makeJsonEnvelope(makeResponse("{$namespace}/${endpoint}", $data)));
 	}
 }
 
